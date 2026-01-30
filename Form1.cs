@@ -15,6 +15,16 @@ namespace snow
 
         private static  Random rand = new Random();
 
+        private const int MinSpeed = 3;
+        private const int MaxSpeed = 6;
+
+        private const int MinRandSize = 20;
+        private const int MaxRandSize = 51;
+        private const int MediumRandSize = 35;
+
+        private const int LessPositionY = -100;
+        private const int MorePositionY = 0;
+
         private struct SnowFlake
         {
             public int X;
@@ -28,12 +38,14 @@ namespace snow
             InitializeComponent();
 
             snowflakeImage = Properties.Resources.snowflakeImg;
+
             snowflakes = new SnowFlake[CountSnowFlakes];
 
             //таймер
             timer = new System.Windows.Forms.Timer();
             timer.Interval = TimerInterval;
             timer.Tick += Timer_Tick;
+
         }
 
         private void Form1_MouseDown(object sender, MouseEventArgs e)
@@ -60,21 +72,21 @@ namespace snow
         private void ResetSnowFlake(int index)
         {
             //размер снежинки
-            int randomSize = rand.Next(15, 51);
+            int randomSize = rand.Next(MinRandSize, MaxRandSize);
 
             int speed;
-            if (randomSize <= 30)
+            if (randomSize <= MediumRandSize)
             {
-                speed = 2;
+                speed = MinSpeed;
             }
             else
             {
-                speed = 4;
+                speed = MaxSpeed;
             }
             float scale = (float)randomSize / snowflakeImage.Width;
 
             snowflakes[index].X = rand.Next(ClientRectangle.Width);
-            snowflakes[index].Y = rand.Next(-200, 0); // появляется выше экрана
+            snowflakes[index].Y = rand.Next(LessPositionY, MorePositionY); // появляется выше экрана
             snowflakes[index].Speed = speed;
             snowflakes[index].Scale = scale;
         }
@@ -99,7 +111,8 @@ namespace snow
             var buffer = new Bitmap(ClientRectangle.Width, ClientRectangle.Height);
             using (var g = Graphics.FromImage(buffer))
             {
-                g.DrawImage(Properties.Resources.backgroundImg, ClientRectangle);
+
+                g.DrawImage(Properties.Resources.backgroundImg, 0, 0, ClientRectangle.Width, ClientRectangle.Height);
                 foreach (var flake in snowflakes)
                 {
                     if (snowflakeImage != null)
