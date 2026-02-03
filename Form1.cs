@@ -26,10 +26,10 @@ namespace snow
 
         private struct SnowFlake
         {
-            public int X;
-            public int Y;
-            public int Speed;
-            public float Scale;
+            public int X { get; set; }
+            public int Y { get; set; }
+            public int Speed { get; set; }
+            public float Scale { get; set; }
         }
 
         public SnowfallForm()
