@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace snow
 {
-    public partial class Form1 : Form
+    public partial class SnowfallForm  : Form
     {
         private const int CountSnowFlakes = 150;
         private const int TimerInterval = 50;
@@ -32,7 +32,7 @@ namespace snow
             public float Scale;
         }
 
-        public Form1()
+        public SnowfallForm()
         {
             InitializeComponent();
 

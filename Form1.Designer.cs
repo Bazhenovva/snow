@@ -1,6 +1,6 @@
 namespace snow
 {
-    partial class Form1
+    partial class SnowfallForm
     {
         /// <summary>
         /// Required designer variable.
