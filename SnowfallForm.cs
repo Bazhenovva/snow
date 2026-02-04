@@ -36,8 +36,8 @@ namespace snow
             InitializeComponent();
 
             // для устранение утечки ОЗУ
-            snowflakeImage = new Bitmap(Properties.Resources.snowflakeImg);
-            background = new Bitmap(Properties.Resources.backgroundImg);
+            snowflakeImage = new Bitmap(Properties.Resources.snowflake);
+            background = new Bitmap(Properties.Resources.background);
             snowflakes = new SnowFlake[CountSnowFlakes];
 
             timer = new System.Windows.Forms.Timer();
