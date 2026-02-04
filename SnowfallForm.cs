@@ -4,19 +4,13 @@ using System.Windows.Forms;
 
 namespace snow
 {
+    /// <summary>
+    /// форма снегопада — screensaver, отображает падающие снежинки, инициализируется автоматически при запуске, закрывается при нажатии на любую клавишу
+    /// </summary>
     public partial class SnowfallForm  : Form
     {
         private const int CountSnowFlakes = 150;
         private const int TimerInterval = 50;
-
-        private SnowFlake[] snowflakes;
-        private Bitmap snowflakeImage;
-        private Bitmap background;
-        private System.Windows.Forms.Timer timer;
-        private static  Random rand = new Random();
-
-        private Bitmap buffer;
-        private Graphics bufferGraphics;
 
         private const int MinSpeed = 3;
         private const int MaxSpeed = 6;
@@ -25,17 +19,18 @@ namespace snow
         private const int MaxRandSize = 51;
         private const int MediumRandSize = 35;
 
-        private const int LessPositionY = -100;
-        private const int MorePositionY = 0;
+        private SnowFlake[] snowflakes;
+        private Bitmap snowflakeImage;
+        private Bitmap background;
+        private System.Windows.Forms.Timer timer;
+        private static  Random rand = new Random();
+        private Bitmap buffer;
+        private Graphics bufferGraphics;
 
-        private struct SnowFlake
-        {
-            public int X { get; set; }
-            public int Y { get; set; }
-            public int Speed { get; set; }
-            public float Scale { get; set; }
-        }
-
+        /// <summary>
+        /// Инициализирует новый экземпляр <see cref="SnowfallForm"/>.
+        /// Инициализация формы снегопада, загрузка ресурсов, создание массива снежинок и настраивание таймера
+        /// </summary>
         public SnowfallForm()
         {
             InitializeComponent();
@@ -43,10 +38,8 @@ namespace snow
             // для устранение утечки ОЗУ
             snowflakeImage = new Bitmap(Properties.Resources.snowflakeImg);
             background = new Bitmap(Properties.Resources.backgroundImg);
-
             snowflakes = new SnowFlake[CountSnowFlakes];
 
-            //таймер
             timer = new System.Windows.Forms.Timer();
             timer.Interval = TimerInterval;
             timer.Tick += Timer_Tick;
@@ -54,7 +47,8 @@ namespace snow
         }
         private void Form1_Load(object sender, EventArgs e)
         {
-            InitializeSnowflakes();
+            ResetAllSnowflakes();
+
             buffer = new Bitmap(ClientRectangle.Width, ClientRectangle.Height);
             bufferGraphics = Graphics.FromImage(buffer);
 
@@ -68,7 +62,7 @@ namespace snow
             }
         }
 
-        private void InitializeSnowflakes()
+        private void ResetAllSnowflakes()
         {
             for (var i = 0; i < snowflakes.Length; i++)
             {
@@ -86,7 +80,7 @@ namespace snow
             var scale = (float)randomSize / snowflakeImage.Width;
 
             snowflakes[index].X = rand.Next(ClientRectangle.Width);
-            snowflakes[index].Y = rand.Next(LessPositionY, MorePositionY); // появляется выше экрана
+            snowflakes[index].Y = rand.Next(SnowFlakeData.LessPositionY, SnowFlakeData.MorePositionY); // появляется выше экрана
             snowflakes[index].Speed = speed;
             snowflakes[index].Scale = scale;
         }
