@@ -43,7 +43,6 @@ namespace snow
 
             this.Load += new System.EventHandler(this.Form1_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1_Paint);
 
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;

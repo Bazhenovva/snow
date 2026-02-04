@@ -11,8 +11,12 @@ namespace snow
 
         private SnowFlake[] snowflakes;
         private Bitmap snowflakeImage;
+        private Bitmap background;
         private System.Windows.Forms.Timer timer;
         private static  Random rand = new Random();
+
+        private Bitmap buffer;
+        private Graphics bufferGraphics;
 
         private const int MinSpeed = 3;
         private const int MaxSpeed = 6;
@@ -36,7 +40,9 @@ namespace snow
         {
             InitializeComponent();
 
-            snowflakeImage = Properties.Resources.snowflakeImg;
+            // для устранение утечки ОЗУ
+            snowflakeImage = new Bitmap(Properties.Resources.snowflakeImg);
+            background = new Bitmap(Properties.Resources.backgroundImg);
 
             snowflakes = new SnowFlake[CountSnowFlakes];
 
@@ -49,6 +55,9 @@ namespace snow
         private void Form1_Load(object sender, EventArgs e)
         {
             InitializeSnowflakes();
+            buffer = new Bitmap(ClientRectangle.Width, ClientRectangle.Height);
+            bufferGraphics = Graphics.FromImage(buffer);
+
             timer.Start();
         }
 
@@ -61,7 +70,7 @@ namespace snow
 
         private void InitializeSnowflakes()
         {
-            for (int i = 0; i < snowflakes.Length; i++)
+            for (var i = 0; i < snowflakes.Length; i++)
             {
                 ResetSnowFlake(i);
             }
@@ -84,7 +93,7 @@ namespace snow
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            for (int i = 0; i < snowflakes.Length; i++)
+            for (var i = 0; i < snowflakes.Length; i++)
             {
                 snowflakes[i].Y += snowflakes[i].Speed;
 
@@ -93,28 +102,23 @@ namespace snow
                     ResetSnowFlake(i);
                 }
             }
+            bufferGraphics.DrawImage(background, 0, 0, ClientRectangle.Width, ClientRectangle.Height);
 
-            Form1_Paint(this, new PaintEventArgs(CreateGraphics(), ClientRectangle));
-        }
 
-        private void Form1_Paint(object sender, PaintEventArgs e)
-        {
-            var buffer = new Bitmap(ClientRectangle.Width, ClientRectangle.Height);
-            using (var g = Graphics.FromImage(buffer))
+            foreach (var flake in snowflakes)
             {
-
-                g.DrawImage(Properties.Resources.backgroundImg, 0, 0, ClientRectangle.Width, ClientRectangle.Height); // картинка растягиватеся, чтобы полосы исчезли
-                foreach (var flake in snowflakes)
+                if (snowflakeImage != null)
                 {
-                    if (snowflakeImage != null)
-                    {
-                        var drawWidth = (int)(snowflakeImage.Width * flake.Scale);
-                        var drawHeight = (int)(snowflakeImage.Height * flake.Scale);
-                        g.DrawImage(snowflakeImage, flake.X, flake.Y, drawWidth, drawHeight);
-                    }
+                    var drawWidth = (int)(snowflakeImage.Width * flake.Scale);
+                    var drawHeight = (int)(snowflakeImage.Height * flake.Scale);
+                    bufferGraphics.DrawImage(snowflakeImage, flake.X, flake.Y, drawWidth, drawHeight);
                 }
             }
-            e.Graphics.DrawImage(buffer, ClientRectangle);
+
+            using (var g = CreateGraphics())
+            {
+                g.DrawImage(buffer, 0, 0);
+            }
         }
     }
 }
