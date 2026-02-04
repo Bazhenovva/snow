@@ -1,6 +1,6 @@
 namespace snow
 {
-    partial class Form1
+    partial class SnowfallForm
     {
         /// <summary>
         /// Required designer variable.
@@ -37,8 +37,18 @@ namespace snow
             this.BackgroundImage = global::snow.Properties.Resources.background;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(806, 467);
-            this.Name = "Form1";
+
+            this.Name = "SnowfallForm";
             this.Text = "Деревня с падающими снежинками";
+
+            this.Load += new System.EventHandler(this.Form1_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
+
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+
+            this.TopMost = true;
+
             this.ResumeLayout(false);
         }
 
