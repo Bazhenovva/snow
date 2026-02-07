@@ -67,9 +67,9 @@ namespace snow
 
         private void ResetAllSnowflakes()
         {
-            for (var i = 0; i < snowflakes.Length; i++)
+            for (var flakeIndex = 0; flakeIndex < snowflakes.Length; flakeIndex++)
             {
-                ResetSnowFlake(i);
+                ResetSnowFlake(flakeIndex);
             }
         }
 
