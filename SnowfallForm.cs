@@ -19,6 +19,9 @@ namespace snow
         private const int MaxRandSize = 51;
         private const int MediumRandSize = 35;
 
+        private const int OriginX = 0;
+        private const int OriginY = 0;
+
         private SnowFlake[] snowflakes;
         private Bitmap snowflakeImage;
         private Bitmap background;
@@ -87,16 +90,16 @@ namespace snow
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            for (var i = 0; i < snowflakes.Length; i++)
+            for (var flakeIndex = 0; flakeIndex < snowflakes.Length; flakeIndex++)
             {
-                snowflakes[i].Y += snowflakes[i].Speed;
+                snowflakes[flakeIndex].Y += snowflakes[flakeIndex].Speed;
 
-                if (snowflakes[i].Y > ClientRectangle.Height)
+                if (snowflakes[flakeIndex].Y > ClientRectangle.Height)
                 {
-                    ResetSnowFlake(i);
+                    ResetSnowFlake(flakeIndex);
                 }
             }
-            bufferGraphics.DrawImage(background, 0, 0, ClientRectangle.Width, ClientRectangle.Height);
+            bufferGraphics.DrawImage(background, OriginX, OriginY, ClientRectangle.Width, ClientRectangle.Height);
 
 
             foreach (var flake in snowflakes)
@@ -111,7 +114,7 @@ namespace snow
 
             using (var g = CreateGraphics())
             {
-                g.DrawImage(buffer, 0, 0);
+                g.DrawImage(buffer, OriginX, OriginY);
             }
         }
     }
